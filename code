@@ -1,0 +1,95 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+#include<ctime>
+  using namespace std;
+  void insertionSort(int arr[], const int SIZE, ofstream& outFile);
+  void printArray(int arr[], const int SIZE);
+  void swap(int& a, int& b);
+  void fillArray(int arr[], const int SIZE);
+
+  int main() {
+  //read in the file and write it to an array
+    ifstream inFile;
+    inFile.open("nums.txt");
+    const int SIZE = 100;
+    int arr[SIZE];
+    int i = 0;
+    int comparisons = 0;
+    
+    while (!inFile.eof()) {
+      inFile >> arr[i];
+      i++;
+    }
+    inFile.close();
+
+    //sort the array
+    ofstream outFile;
+    outFile.open("sorted.txt");
+    insertionSort(arr, SIZE, outFile);
+    outFile.close();
+
+    //print the array after sorting
+    cout << "After sorting: " << endl;
+    printArray(arr, SIZE);
+
+    return 0;
+}
+
+void insertionSort(int arr[], const int SIZE, ofstream& outFile) {
+  int i, j, key;
+  for (i = 1; i < SIZE; i++) {
+    key = arr[i];
+    j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      j = j - 1;
+    }
+    arr[j + 1] = key;
+  }
+}
+
+void printArray(int arr[], const int SIZE) {
+  for (int i = 0; i < SIZE; i++) {
+    cout << arr[i] << " ";
+  }
+  cout << endl;
+}
+
+void swap(int& a, int& b) {
+  int temp = a;
+  a = b;
+  b = temp;
+}
+
+//function to binary search for the number 42
+int binarySearch(int arr[], int l, int r, int x)
+{
+  ofstream outFile;
+  outFile.open("search.txt");
+  int comparisons = 0;
+  if (r >= l) {
+    int mid = l + (r - l) / 2;
+    // If the element is present at the middle itself
+    if (arr[mid] == x)
+      return mid;
+    // If element is smaller than mid, then it can only
+    // be present in left subarray
+    if (arr[mid] > x)
+      return binarySearch(arr, l, mid - 1, x);
+    // Else the element can only be present in right
+    // subarray
+    return binarySearch(arr, mid + 1, r, x);
+    comparisons += 1;
+}
+if (comparisons == 0) {
+  outFile << "42 was not found in the array" << endl;
+}
+else {
+  outFile << "42 was found in the array" << endl;
+}
+// We reach here when element is not present in array 
+return -1;
+//print the number of comparisons
+outFile << "Number of comparisons: " << comparisons << endl;
+}
